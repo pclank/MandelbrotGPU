@@ -1,0 +1,10 @@
+C:/Repos/Mandelbrot/build/CMakeFiles/Mandelbrot.dir
+C:/Repos/Mandelbrot/build/CMakeFiles/INSTALL.dir
+C:/Repos/Mandelbrot/build/CMakeFiles/ALL_BUILD.dir
+C:/Repos/Mandelbrot/build/CMakeFiles/ZERO_CHECK.dir
+C:/Repos/Mandelbrot/build/Glitter/Vendor/glfw/CMakeFiles/uninstall.dir
+C:/Repos/Mandelbrot/build/Glitter/Vendor/glfw/CMakeFiles/INSTALL.dir
+C:/Repos/Mandelbrot/build/Glitter/Vendor/glfw/CMakeFiles/ALL_BUILD.dir
+C:/Repos/Mandelbrot/build/Glitter/Vendor/glfw/src/CMakeFiles/glfw.dir
+C:/Repos/Mandelbrot/build/Glitter/Vendor/glfw/src/CMakeFiles/update_mappings.dir
+C:/Repos/Mandelbrot/build/Glitter/Vendor/glfw/src/CMakeFiles/INSTALL.dir

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\Sources\main.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\Vendor\glad\src\glad.c">
+      <Filter>Vendors</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\Headers\Shader.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\Headers\glitter.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Repos\Mandelbrot\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Repos\Mandelbrot\Glitter\Shaders\simple_shader.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="C:\Repos\Mandelbrot\Glitter\Shaders\simple_shader.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="C:\Repos\Mandelbrot\Glitter\Sources\gpu_src\test.cl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="C:\Repos\Mandelbrot\.gitattributes" />
+    <None Include="C:\Repos\Mandelbrot\.gitignore" />
+    <None Include="C:\Repos\Mandelbrot\.gitmodules" />
+    <None Include="C:\Repos\Mandelbrot\Readme.md" />
+    <None Include="..\Glitter\Sources\gpu_src\mandel.cl">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{F053A150-DC22-373E-ADEC-5AB2E08C2266}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{5322D6A8-F079-358B-A420-0AAB1D89281C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{92F8E10E-7B39-35FF-BC8C-83917851A635}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vendors">
+      <UniqueIdentifier>{55688E6B-F553-38A4-B96C-C0F95771F3D1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
