@@ -11,6 +11,11 @@
 #include <cstdlib>
 #include <direct.h>
 
+Params params;
+float dt = 0.0f;
+
+void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
 int main(int argc, char * argv[]) {
 
     // Load GLFW and Create a Window
@@ -32,6 +37,8 @@ int main(int argc, char * argv[]) {
     glfwMakeContextCurrent(mWindow);
     gladLoadGL();
     fprintf(stderr, "OpenGL %s\n", glGetString(GL_VERSION));
+
+    glfwSetKeyCallback(mWindow, KeyboardCallback);
 
     // OpenCL initialization
     std::vector<cl::Platform> all_platforms;
@@ -153,6 +160,8 @@ int main(int argc, char * argv[]) {
 
     target_texture = clCreateFromGLTexture(context(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, gl_texture, &err);
     std::cout << "Created CL Image2D with err:\t" << err << std::endl;
+    copy_texture = clCreateFromGLTexture(context(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, gl_texture, &err);
+    std::cout << "Created CL Image2D with err:\t" << err << std::endl;
 
     // Flush GL queue        
     glFinish();
@@ -160,10 +169,12 @@ int main(int argc, char * argv[]) {
 
     // Acquire shared objects
     err = clEnqueueAcquireGLObjects(queue(), 1, &target_texture(), 0, NULL, NULL);
+    err = clEnqueueAcquireGLObjects(queue(), 1, &copy_texture(), 0, NULL, NULL);
     std::cout << "Acquired GL objects with err:\t" << err << std::endl;
 
     //tester = cl::Kernel(program, "tex_test");
     mandeler = cl::Kernel(program, "Mandel");
+    filter = cl::Kernel(program, "GaussianFilter");
     cl::NDRange global_test(width, height);
     //tester(cl::EnqueueArgs(queue, global_test), target_texture).wait();
     mandeler(cl::EnqueueArgs(queue, global_test), target_texture, 0, 0, 1.0f).wait();
@@ -174,12 +185,15 @@ int main(int argc, char * argv[]) {
     // Release shared objects                                                          
     err = clEnqueueReleaseGLObjects(queue(), 1, &target_texture(), 0, NULL, NULL);
     std::cout << "Releasing GL objects with err:\t" << err << std::endl;
+    err = clEnqueueReleaseGLObjects(queue(), 1, &copy_texture(), 0, NULL, NULL);
+    std::cout << "Releasing GL objects with err:\t" << err << std::endl;
 
     // Flush CL queue
     err = clFinish(queue());
     std::cout << "Finished CL queue with err:\t" << err << std::endl;
 
     // Rendering Loop
+    float time = glfwGetTime();
     while (glfwWindowShouldClose(mWindow) == false) {
         if (glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(mWindow, true);
@@ -188,26 +202,40 @@ int main(int argc, char * argv[]) {
         glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        dt = glfwGetTime() - time;
+        time = glfwGetTime();
+
         // Flush GL queue        
         glFinish();
         glFlush();
 
         // Acquire shared objects
         err = clEnqueueAcquireGLObjects(queue(), 1, &target_texture(), 0, NULL, NULL);
+        err = clEnqueueAcquireGLObjects(queue(), 1, &copy_texture(), 0, NULL, NULL);
 
-        //const int dx = cos(glfwGetTime()) * 2;
-        const float dx = cos(glfwGetTime());
+        /*const float dx = cos(glfwGetTime());
         const float dy = 0;
-        //const float scale = cos(glfwGetTime());
-        const float scale = glfwGetTime();
+        const float scale = glfwGetTime();*/
 
-        mandeler(cl::EnqueueArgs(queue, global_test), target_texture, dx, dy, scale).wait();
+        //mandeler(cl::EnqueueArgs(queue, global_test), target_texture, dx, dy, scale).wait();
+        mandeler(cl::EnqueueArgs(queue, global_test), target_texture, params.dx, params.dy, params.scale).wait();
+
+        // Image Copy parameters
+        static const size_t imageSize[3] = { width, height, 1 };
+        static const size_t imageOrigin[3] = { 0, 0, 0 };
+
+        if (params.filterOn)
+        {
+            filter(cl::EnqueueArgs(queue, global_test), target_texture, copy_texture).wait();
+            clEnqueueCopyImage(queue(), copy_texture(), target_texture(), imageOrigin, imageOrigin, imageSize, 0, NULL, NULL);
+        }
 
         // We have to generate the mipmaps again!!!
         glGenerateMipmap(GL_TEXTURE_2D);
 
         // Release shared objects                                                          
         err = clEnqueueReleaseGLObjects(queue(), 1, &target_texture(), 0, NULL, NULL);
+        err = clEnqueueReleaseGLObjects(queue(), 1, &copy_texture(), 0, NULL, NULL);
 
         // Flush CL queue
         err = clFinish(queue());
@@ -225,4 +253,22 @@ int main(int argc, char * argv[]) {
         glfwPollEvents();
     }   glfwTerminate();
     return EXIT_SUCCESS;
+}
+
+void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if ((key == GLFW_KEY_W || key == GLFW_PRESS) && action == GLFW_PRESS)
+        params.scale += force * dt;
+    else if ((key == GLFW_KEY_S || key == GLFW_KEY_DOWN) && action == GLFW_PRESS)
+        params.scale -= force * dt;
+    else if ((key == GLFW_KEY_D || key == GLFW_KEY_RIGHT) && action == GLFW_PRESS)
+        params.dx += force * dt;
+    else if ((key == GLFW_KEY_A || key == GLFW_KEY_LEFT) && action == GLFW_PRESS)
+        params.dx -= force * dt;
+    else if (key == GLFW_KEY_E && action == GLFW_PRESS)
+        params.dy += force * dt;
+    else if (key == GLFW_KEY_A && action == GLFW_PRESS)
+        params.dy -= force * dt;
+    else if (key == GLFW_KEY_F && action == GLFW_PRESS)
+        params.filterOn = !params.filterOn;
 }

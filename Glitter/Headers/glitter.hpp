@@ -18,9 +18,17 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
+struct Params {
+    float dx = 0;
+    float dy = 0;
+    float scale = 1.0f;
+    bool filterOn = false;
+};
+
 // Define Some Constants
 const int mWidth = 1280;
 const int mHeight = 800;
+const float force = 10.0f;
 
 // **********************************************************************************
 // OpenCL section
@@ -36,6 +44,7 @@ cl::Buffer test_buffer;
 cl::Buffer debug_buffer;
 cl::Kernel test_kernel;
 cl::Kernel mandel_Kernel;
+cl::Kernel filter_Kernel;
 cl::NDRange global_tex(mWidth, mHeight);
 
 float hardcoded_vertices[] = {
@@ -53,8 +62,10 @@ unsigned int indices[] = {
 
 cl::make_kernel<cl::Image2D> tester(test_kernel);
 cl::make_kernel<cl::Image2D, float, float, float> mandeler(mandel_Kernel);
+cl::make_kernel<cl::Image2D, cl::Image2D> filter(filter_Kernel);
 
 cl::Image2D target_texture;
+cl::Image2D copy_texture;
 
 std::string ReadFile2(const char* f_name = "kernels.cl")
 {

@@ -62,3 +62,36 @@ kernel void Mandel(write_only image2d_t res, float dx, float dy, float scale)
 
 	write_imagef(res, (int2)(x, y), convCol);
 }
+
+__constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE |
+CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
+
+kernel void GaussianFilter(read_only image2d_t input, write_only image2d_t res)
+{
+	//int k[9] = { -1, -1, -1, -1, 9, -1, -1, -1, -1 };
+	int k[9] = { 1, 2, 1, 2, 4, 2, 1, 2, 1 };
+	int x = get_global_id(0);
+	int y = get_global_id(1);
+	float4 pixel =
+		k[0] * read_imagef(input, sampler,
+			(int2)(x - 1, y - 1)) +
+		k[1] * read_imagef(input, sampler,
+			(int2)(x, y - 1)) +
+		k[2] * read_imagef(input, sampler,
+			(int2)(x + 1, y - 1)) +
+		k[3] * read_imagef(input, sampler,
+			(int2)(x - 1, y)) +
+		k[4] * read_imagef(input, sampler,
+			(int2)(x, y)) +
+		k[5] * read_imagef(input, sampler,
+			(int2)(x + 1, y)) +
+		k[6] * read_imagef(input, sampler,
+			(int2)(x - 1, y + 1)) +
+		k[7] * read_imagef(input, sampler,
+			(int2)(x, y + 1)) +
+		k[8] * read_imagef(input, sampler,
+			(int2)(x + 1, y + 1));
+
+	pixel = (float4)(pixel.xyz / 16, 1.0f);
+	write_imagef(res, (int2)(x, y), pixel);
+}
