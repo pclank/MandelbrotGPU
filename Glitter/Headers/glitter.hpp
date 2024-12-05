@@ -23,11 +23,23 @@ struct Params {
     float dy = 0;
     float scale = 1.0f;
     bool filterOn = false;
+    bool playAnimation = false;
+    float animationTime = 0.0f;
+
+    void Reset()
+    {
+        dx = 0;
+        dy = 0;
+        scale = 1.0f;
+        filterOn = false;
+        playAnimation = false;
+        animationTime = 0.0f;
+    }
 };
 
 // Define Some Constants
-const int mWidth = 1280;
-const int mHeight = 800;
+const int mWidth = 1920;
+const int mHeight = 1080;
 const float force = 10.0f;
 
 // **********************************************************************************

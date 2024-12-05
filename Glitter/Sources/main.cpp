@@ -144,7 +144,7 @@ int main(int argc, char * argv[]) {
     int width, height, nrChannels;
 
     std::string tex_char(buffer);
-    tex_char += "\\..\\textures\\wall.jpg";
+    tex_char += "\\..\\textures\\sample.jpg";
     unsigned char* data = stbi_load(tex_char.c_str(), &width, &height, &nrChannels, 0);
     if (data)
     {
@@ -192,6 +192,10 @@ int main(int argc, char * argv[]) {
     err = clFinish(queue());
     std::cout << "Finished CL queue with err:\t" << err << std::endl;
 
+    // Input information
+    std::cout << "\n\nW or S: zoom (scale)\nA or D: offset horizontally\nE or Q: offset vertically\nR: reset parameters\nF: enable/disable filtering\nP: play/pause animation"
+        << std::endl;
+
     // Rendering Loop
     float time = glfwGetTime();
     while (glfwWindowShouldClose(mWindow) == false) {
@@ -217,8 +221,16 @@ int main(int argc, char * argv[]) {
         const float dy = 0;
         const float scale = glfwGetTime();*/
 
+        // Animation stuff
+        float scale = params.scale;
+        if (params.playAnimation)
+        {
+            params.animationTime += dt;
+            scale = 1.0f + params.animationTime;
+        }
+
         //mandeler(cl::EnqueueArgs(queue, global_test), target_texture, dx, dy, scale).wait();
-        mandeler(cl::EnqueueArgs(queue, global_test), target_texture, params.dx, params.dy, params.scale).wait();
+        mandeler(cl::EnqueueArgs(queue, global_test), target_texture, params.dx, params.dy, scale).wait();
 
         // Image Copy parameters
         static const size_t imageSize[3] = { width, height, 1 };
@@ -243,10 +255,22 @@ int main(int argc, char * argv[]) {
         // bind Texture
         glBindTexture(GL_TEXTURE_2D, gl_texture);
 
-        // render container
-        simple_shader.use();
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        // Bind Framebuffer
+        static GLuint fboId = 0;
+        glGenFramebuffers(1, &fboId);
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, fboId);
+
+        // Render texture directly
+        glFramebufferTexture2D(GL_READ_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+            GL_TEXTURE_2D, gl_texture, 0);
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+        glBlitFramebuffer(0, 0, width, height, 0, 0, width, height,
+            GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
+        //// render container
+        //simple_shader.use();
+        //glBindVertexArray(VAO);
+        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         // Flip Buffers and Draw
         glfwSwapBuffers(mWindow);
@@ -267,8 +291,12 @@ void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int
         params.dx -= force * dt;
     else if (key == GLFW_KEY_E && action == GLFW_PRESS)
         params.dy += force * dt;
-    else if (key == GLFW_KEY_A && action == GLFW_PRESS)
+    else if (key == GLFW_KEY_Q && action == GLFW_PRESS)
         params.dy -= force * dt;
     else if (key == GLFW_KEY_F && action == GLFW_PRESS)
         params.filterOn = !params.filterOn;
+    else if (key == GLFW_KEY_R && action == GLFW_PRESS)
+        params.Reset();
+    else if (key == GLFW_KEY_P && action == GLFW_PRESS)
+        params.playAnimation = !params.playAnimation;
 }
