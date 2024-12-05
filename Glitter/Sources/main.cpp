@@ -1,4 +1,4 @@
-// Local Headers
+﻿// Local Headers
 #include "glitter.hpp"
 #include <Shader.hpp>
 
@@ -12,7 +12,7 @@
 #include <direct.h>
 
 Params params;
-float dt = 0.0f;
+float dt = 0.0f;                                                                                                                              
 
 void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
@@ -81,9 +81,12 @@ int main(int argc, char * argv[]) {
     // Read kernel source
     char buffer[1024];
     getcwd(buffer, 1024);
-    std::string kernel_char(buffer);
+    //std::string kernel_char(buffer);
     //kernel_char += "\\..\\Glitter\\Sources\\gpu_src\\test.cl";
-    kernel_char += "\\..\\Glitter\\Sources\\gpu_src\\mandel.cl";
+    //kernel_char += "\\..\\Glitter\\Sources\\gpu_src\\mandel.cl";
+    GetModuleFileName(NULL, buffer, sizeof(buffer));
+    std::string kernel_char(buffer);
+    kernel_char += "\\..\\mandel.cl";
     kernel_source = ReadFile2(kernel_char.c_str());
     sources.push_back({ kernel_source.c_str(), kernel_source.length() });
 
@@ -98,13 +101,6 @@ int main(int argc, char * argv[]) {
 
     // Prepare buffers
     debug_buffer = cl::Buffer(context, CL_MEM_READ_WRITE, sizeof(float) * mWidth * mHeight);
-
-    // OpenGL shaders
-    std::string vs_char(buffer);
-    std::string fs_char(buffer);
-    vs_char += "\\..\\Glitter\\Shaders\\simple_shader.vs";
-    fs_char += "\\..\\Glitter\\Shaders\\simple_shader.fs";
-    Shader simple_shader(vs_char.c_str(), fs_char.c_str());
 
     // Setup OpenGL Buffers
     unsigned int VBO, VAO, EBO;
@@ -235,7 +231,8 @@ int main(int argc, char * argv[]) {
         if (params.playAnimation)
         {
             params.animationTime += dt * params.animationSpeed;
-            scale = 1.0f + params.animationTime;
+            //scale = 1.0f + params.animationTime;
+            params.scale = 1.0f + params.animationTime;
         }
 
         //mandeler(cl::EnqueueArgs(queue, global_test), target_texture, dx, dy, scale).wait();
