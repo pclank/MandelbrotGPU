@@ -143,7 +143,7 @@ int main(int argc, char * argv[]) {
 
     int width, height, nrChannels;
 
-    std::string tex_char(buffer);
+    /*std::string tex_char(buffer);
     tex_char += "\\..\\textures\\sample.jpg";
     unsigned char* data = stbi_load(tex_char.c_str(), &width, &height, &nrChannels, 0);
     if (data)
@@ -154,7 +154,14 @@ int main(int argc, char * argv[]) {
     {
         std::cout << "Failed to load texture" << std::endl;
     }
-    stbi_image_free(data);
+    stbi_image_free(data);*/
+
+    height = mHeight;
+    width = mWidth;
+
+    // Set empty
+    std::vector<GLubyte> emptyData(mWidth * mHeight * 4, 0);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, &emptyData[0]);
 
     glGenerateMipmap(GL_TEXTURE_2D);
 
