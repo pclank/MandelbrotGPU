@@ -172,8 +172,10 @@ int main(int argc, char * argv[]) {
     err = clEnqueueAcquireGLObjects(queue(), 1, &copy_texture(), 0, NULL, NULL);
     std::cout << "Acquired GL objects with err:\t" << err << std::endl;
 
+    // Set up kernels
     //tester = cl::Kernel(program, "tex_test");
-    mandeler = cl::Kernel(program, "Mandel");
+    //mandeler = cl::Kernel(program, "Mandel");
+    mandeler = cl::Kernel(program, "MandelSmooth");
     filter = cl::Kernel(program, "GaussianFilter");
     cl::NDRange global_test(width, height);
     //tester(cl::EnqueueArgs(queue, global_test), target_texture).wait();
