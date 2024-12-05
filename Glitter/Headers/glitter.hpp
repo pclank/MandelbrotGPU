@@ -25,6 +25,7 @@ struct Params {
     bool filterOn = false;
     bool playAnimation = false;
     float animationTime = 0.0f;
+    float animationSpeed = 1.0f;
 
     void Reset()
     {
@@ -34,6 +35,7 @@ struct Params {
         filterOn = false;
         playAnimation = false;
         animationTime = 0.0f;
+        animationSpeed = 1.0f;
     }
 };
 

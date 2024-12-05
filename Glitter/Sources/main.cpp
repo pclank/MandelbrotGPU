@@ -195,8 +195,8 @@ int main(int argc, char * argv[]) {
     std::cout << "Finished CL queue with err:\t" << err << std::endl;
 
     // Input information
-    std::cout << "\n\nW or S: zoom (scale)\nA or D: offset horizontally\nE or Q: offset vertically\nR: reset parameters\nF: enable/disable filtering\nP: play/pause animation"
-        << std::endl;
+    std::cout << "\n\nW or S: zoom (scale)\nA or D: offset horizontally\nE or Q: offset vertically\nR: reset parameters\nF: enable/disable filtering\n \
+        P: play/pause animation\n] or [: increase/decrease animation speed" << std::endl;
 
     // Rendering Loop
     float time = glfwGetTime();
@@ -227,7 +227,7 @@ int main(int argc, char * argv[]) {
         float scale = params.scale;
         if (params.playAnimation)
         {
-            params.animationTime += dt;
+            params.animationTime += dt * params.animationSpeed;
             scale = 1.0f + params.animationTime;
         }
 
@@ -301,4 +301,8 @@ void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int
         params.Reset();
     else if (key == GLFW_KEY_P && action == GLFW_PRESS)
         params.playAnimation = !params.playAnimation;
+    else if (key == GLFW_KEY_LEFT_BRACKET && action == GLFW_PRESS)
+        params.animationSpeed = (params.animationSpeed - 0.2f < 0.1f) ? 0.1f : params.animationSpeed - 0.2f;
+    else if (key == GLFW_KEY_RIGHT_BRACKET && action == GLFW_PRESS)
+        params.animationSpeed += 0.2f;
 }
