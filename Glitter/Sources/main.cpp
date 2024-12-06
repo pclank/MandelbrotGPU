@@ -12,8 +12,13 @@
 #include <direct.h>
 
 Params params;
-float dt = 0.0f;                                                                                                                              
+float dt = 0.0f;                  
+Timer main_timer;
+GUI* gui_pointer;
 
+// Callbacks
+void CursorPositionCallback(GLFWwindow* window, double xpos, double ypos);
+void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 int main(int argc, char * argv[]) {
@@ -38,6 +43,9 @@ int main(int argc, char * argv[]) {
     gladLoadGL();
     fprintf(stderr, "OpenGL %s\n", glGetString(GL_VERSION));
 
+    // OpenGL Callback Functions
+    glfwSetCursorPosCallback(mWindow, CursorPositionCallback);
+    glfwSetMouseButtonCallback(mWindow, MouseButtonCallback);
     glfwSetKeyCallback(mWindow, KeyboardCallback);
 
     // OpenCL initialization
@@ -201,6 +209,11 @@ int main(int argc, char * argv[]) {
     std::cout << "\n\nW or S: zoom (scale)\nA or D: offset horizontally\nE or Q: offset vertically\nR: reset parameters\nF: enable/disable filtering\n \
         P: play/pause animation\n] or [: increase/decrease animation speed" << std::endl;
 
+    // Initialize our GUI
+    GUI gui = GUI(mWindow, main_timer);
+    gui.Init();
+    gui_pointer = &gui;
+
     // Rendering Loop
     float time = glfwGetTime();
     while (glfwWindowShouldClose(mWindow) == false) {
@@ -213,6 +226,9 @@ int main(int argc, char * argv[]) {
 
         dt = glfwGetTime() - time;
         time = glfwGetTime();
+
+        // Update Timer
+        main_timer.UpdateTime();
 
         // Flush GL queue        
         glFinish();
@@ -273,18 +289,71 @@ int main(int argc, char * argv[]) {
         glBlitFramebuffer(0, 0, width, height, 0, 0, width, height,
             GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
-        //// render container
-        //simple_shader.use();
-        //glBindVertexArray(VAO);
-        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        // Render GUI
+        if (gui.gui_enabled)
+            gui.Render();
+
+        // Reset input flags
+        gui.ResetInputFlags();
 
         // Flip Buffers and Draw
         glfwSwapBuffers(mWindow);
         glfwPollEvents();
-    }   glfwTerminate();
+    }
+    
+    // Cleanup GUI
+    gui.Cleanup();
+
+    glfwTerminate();
+    
     return EXIT_SUCCESS;
 }
 
+/// <summary>
+/// Callback function for mouse cursor movement
+/// </summary>
+/// <param name="window"></param>
+/// <param name="xpos"></param>
+/// <param name="ypos"></param>
+void CursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
+{
+    gui_pointer->MousePositionUpdate(xpos, ypos);
+
+    //ImGui_ImplGlfw_CursorPosCallback(window, xpos, ypos);
+}
+
+/// <summary>
+/// Callback function for mouse button press
+/// </summary>
+/// <param name="window"></param>
+/// <param name="button"></param>
+/// <param name="action"></param>
+/// <param name="mods"></param>
+void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (!gui_pointer->clicked && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+    {
+        std::cout << "MOUSE CLICK on x: " << gui_pointer->mouse_xpos << " y: " << gui_pointer->mouse_ypos << std::endl;
+        gui_pointer->clicked = true;
+    }
+    else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+    {
+        std::cout << "MOUSE RELEASE on x: " << gui_pointer->mouse_xpos << " y: " << gui_pointer->mouse_ypos << std::endl;
+        gui_pointer->clicked = false;
+    }
+
+    //ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
+}
+
+
+/// <summary>
+/// Callback Function for keyboard button press
+/// </summary>
+/// <param name="window"></param>
+/// <param name="key"></param>
+/// <param name="scancode"></param>
+/// <param name="action"></param>
+/// <param name="mods"></param>
 void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if ((key == GLFW_KEY_W || key == GLFW_PRESS) && action == GLFW_PRESS)
@@ -309,4 +378,19 @@ void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int
         params.animationSpeed = (params.animationSpeed - 0.2f < 0.1f) ? 0.1f : params.animationSpeed - 0.2f;
     else if (key == GLFW_KEY_RIGHT_BRACKET && action == GLFW_PRESS)
         params.animationSpeed += 0.2f;
+    // Enable/Disable Cursor
+    else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+    {
+        if (gui_pointer->cursor_enabled)
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        else
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_CAPTURED);
+
+        gui_pointer->cursor_enabled = !gui_pointer->cursor_enabled;
+    }
+    // Enable/Disable GUI
+    else if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
+    {
+        gui_pointer->gui_enabled = !gui_pointer->gui_enabled;
+    }
 }

@@ -20,6 +20,7 @@ else()
 endif()
 
 include_directories(Glitter/Headers/
+					Glitter/imgui/
                     Glitter/Vendor/glad/include/
                     Glitter/Vendor/glfw/include/
                     Glitter/Vendor/glm/
@@ -36,6 +37,12 @@ file(GLOB PROJECT_SHADERS Glitter/Shaders/*.comp
 						  Glitter/Shaders/*.vs
 						  Glitter/Shaders/*.fs
 						  Glitter/Sources/gpu_src/*.cl)
+						  
+file(GLOB IMGUI Glitter/imgui/*.h
+				Glitter/imgui/backends/*.h
+                Glitter/imgui/*.cpp
+				Glitter/imgui/backends/*.cpp)						  
+
 file(GLOB PROJECT_CONFIGS CMakeLists.txt
                           Readme.md
                          .gitattributes
@@ -46,13 +53,14 @@ source_group("Headers" FILES ${PROJECT_HEADERS})
 source_group("Shaders" FILES ${PROJECT_SHADERS})
 source_group("Sources" FILES ${PROJECT_SOURCES})
 source_group("Vendors" FILES ${VENDORS_SOURCES})
+source_group("Imgui" FILES ${IMGUI})
 
 link_directories(Glitter/Sources/OpenCL/lib)
 
 add_definitions(-DGLFW_INCLUDE_NONE
                 -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
-                               ${PROJECT_SHADERS} ${PROJECT_CONFIGS}
+                               ${PROJECT_SHADERS} ${PROJECT_CONFIGS} ${IMGUI}
                                ${VENDORS_SOURCES})
 target_link_libraries(${PROJECT_NAME} glfw
                       ${GLFW_LIBRARIES} ${GLAD_LIBRARIES}

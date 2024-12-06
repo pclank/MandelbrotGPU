@@ -86,7 +86,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\imgui;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -103,10 +103,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;GLFW_INCLUDE_NONE;PROJECT_SOURCE_DIR=\"C:/Repos/Mandelbrot\";CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\imgui;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\imgui;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -114,8 +114,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <PostBuildEvent>
-      <Message>
-      </Message>
+      <Message></Message>
       <Command>setlocal
 "C:\Program Files\CMake\bin\cmake.exe" -E copy_directory C:/Repos/Mandelbrot/Glitter/Shaders C:/Repos/Mandelbrot/build/Mandelbrot/Debug
 if %errorlevel% neq 0 goto :cmEnd
@@ -142,7 +141,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\imgui;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
@@ -159,10 +158,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;GLFW_INCLUDE_NONE;PROJECT_SOURCE_DIR=\"C:/Repos/Mandelbrot\";CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\imgui;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\imgui;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -170,8 +169,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <PostBuildEvent>
-      <Message>
-      </Message>
+      <Message></Message>
       <Command>setlocal
 "C:\Program Files\CMake\bin\cmake.exe" -E copy_directory C:/Repos/Mandelbrot/Glitter/Shaders C:/Repos/Mandelbrot/build/Mandelbrot/Release
 if %errorlevel% neq 0 goto :cmEnd
@@ -198,7 +196,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\imgui;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
@@ -215,10 +213,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;GLFW_INCLUDE_NONE;PROJECT_SOURCE_DIR=\"C:/Repos/Mandelbrot\";CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\imgui;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\imgui;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -226,8 +224,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <PostBuildEvent>
-      <Message>
-      </Message>
+      <Message></Message>
       <Command>setlocal
 "C:\Program Files\CMake\bin\cmake.exe" -E copy_directory C:/Repos/Mandelbrot/Glitter/Shaders C:/Repos/Mandelbrot/build/Mandelbrot/MinSizeRel
 if %errorlevel% neq 0 goto :cmEnd
@@ -254,7 +251,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\imgui;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -270,10 +267,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;GLFW_INCLUDE_NONE;PROJECT_SOURCE_DIR=\"C:/Repos/Mandelbrot\";CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\imgui;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\imgui;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -281,8 +278,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <PostBuildEvent>
-      <Message>
-      </Message>
+      <Message></Message>
       <Command>setlocal
 "C:\Program Files\CMake\bin\cmake.exe" -E copy_directory C:/Repos/Mandelbrot/Glitter/Shaders C:/Repos/Mandelbrot/build/Mandelbrot/RelWithDebInfo
 if %errorlevel% neq 0 goto :cmEnd
@@ -365,13 +361,17 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\Sources\GUI.cpp" />
     <ClCompile Include="C:\Repos\Mandelbrot\Glitter\Sources\main.cpp" />
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\Headers\GUI.hpp" />
     <ClInclude Include="C:\Repos\Mandelbrot\Glitter\Headers\Shader.hpp" />
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\Headers\Timer.hpp" />
     <ClInclude Include="C:\Repos\Mandelbrot\Glitter\Headers\glitter.hpp" />
-    <None Include="..\Glitter\Sources\gpu_src\mandel.cl" />
     <None Include="C:\Repos\Mandelbrot\Glitter\Shaders\simple_shader.fs">
     </None>
     <None Include="C:\Repos\Mandelbrot\Glitter\Shaders\simple_shader.vs">
+    </None>
+    <None Include="C:\Repos\Mandelbrot\Glitter\Sources\gpu_src\mandel.cl">
     </None>
     <None Include="C:\Repos\Mandelbrot\Glitter\Sources\gpu_src\test.cl">
     </None>
@@ -379,10 +379,24 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </None>
     <None Include="C:\Repos\Mandelbrot\.gitignore">
     </None>
-    <None Include="C:\Repos\Mandelbrot\.gitmodules">
-    </None>
     <None Include="C:\Repos\Mandelbrot\Readme.md">
     </None>
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\imgui\backends\imgui_impl_glfw.cpp" />
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\backends\imgui_impl_glfw.h" />
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\imgui\backends\imgui_impl_opengl3.cpp" />
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\backends\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\imconfig.h" />
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\imgui\imgui.cpp" />
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\imgui.h" />
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\imgui\imgui_demo.cpp" />
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\imgui\imgui_draw.cpp" />
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\imgui_internal.h" />
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\imgui\imgui_tables.cpp" />
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\imgui\imgui_widgets.cpp" />
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\imstb_rectpack.h" />
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\imstb_textedit.h" />
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\imstb_truetype.h" />
     <ClCompile Include="C:\Repos\Mandelbrot\Glitter\Vendor\glad\src\glad.c" />
   </ItemGroup>
   <ItemGroup>

@@ -12,6 +12,8 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <Timer.hpp>
+#include <GUI.hpp>
 
 // Reference: https://github.com/nothings/stb/blob/master/stb_image.h#L4
 // To use stb_image, add this in *one* C++ source file.
