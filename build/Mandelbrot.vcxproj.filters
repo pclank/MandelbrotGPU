@@ -1,19 +1,76 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\Sources\GUI.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Repos\Mandelbrot\Glitter\Sources\main.cpp">
       <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\imgui\backends\imgui_impl_glfw.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\imgui\backends\imgui_impl_opengl3.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\imgui\imgui.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\imgui\imgui_demo.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\imgui\imgui_draw.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\imgui\imgui_tables.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Repos\Mandelbrot\Glitter\imgui\imgui_widgets.cpp">
+      <Filter>Imgui</Filter>
     </ClCompile>
     <ClCompile Include="C:\Repos\Mandelbrot\Glitter\Vendor\glad\src\glad.c">
       <Filter>Vendors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\Headers\GUI.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="C:\Repos\Mandelbrot\Glitter\Headers\Shader.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\Headers\Timer.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="C:\Repos\Mandelbrot\Glitter\Headers\glitter.hpp">
       <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\backends\imgui_impl_glfw.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\backends\imgui_impl_opengl3.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\backends\imgui_impl_opengl3_loader.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\imconfig.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\imgui.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\imgui_internal.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\imstb_rectpack.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\imstb_textedit.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Repos\Mandelbrot\Glitter\imgui\imstb_truetype.h">
+      <Filter>Imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -26,20 +83,22 @@
     <None Include="C:\Repos\Mandelbrot\Glitter\Shaders\simple_shader.vs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="C:\Repos\Mandelbrot\Glitter\Sources\gpu_src\mandel.cl">
+      <Filter>Shaders</Filter>
+    </None>
     <None Include="C:\Repos\Mandelbrot\Glitter\Sources\gpu_src\test.cl">
       <Filter>Shaders</Filter>
     </None>
     <None Include="C:\Repos\Mandelbrot\.gitattributes" />
     <None Include="C:\Repos\Mandelbrot\.gitignore" />
-    <None Include="C:\Repos\Mandelbrot\.gitmodules" />
     <None Include="C:\Repos\Mandelbrot\Readme.md" />
-    <None Include="..\Glitter\Sources\gpu_src\mandel.cl">
-      <Filter>Shaders</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
       <UniqueIdentifier>{F053A150-DC22-373E-ADEC-5AB2E08C2266}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui">
+      <UniqueIdentifier>{3A7F8274-BD44-35FB-B495-E52620C59655}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{5322D6A8-F079-358B-A420-0AAB1D89281C}</UniqueIdentifier>

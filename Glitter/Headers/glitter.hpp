@@ -12,6 +12,8 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <Timer.hpp>
+#include <GUI.hpp>
 
 // Reference: https://github.com/nothings/stb/blob/master/stb_image.h#L4
 // To use stb_image, add this in *one* C++ source file.
@@ -25,6 +27,7 @@ struct Params {
     bool filterOn = false;
     bool playAnimation = false;
     float animationTime = 0.0f;
+    float animationSpeed = 1.0f;
 
     void Reset()
     {
@@ -34,12 +37,13 @@ struct Params {
         filterOn = false;
         playAnimation = false;
         animationTime = 0.0f;
+        animationSpeed = 1.0f;
     }
 };
 
 // Define Some Constants
-const int mWidth = 1920;
-const int mHeight = 1080;
+int mWidth = 1920;
+int mHeight = 1080;
 const float force = 10.0f;
 
 // **********************************************************************************

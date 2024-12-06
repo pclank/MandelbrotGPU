@@ -1,4 +1,4 @@
-// Local Headers
+﻿// Local Headers
 #include "glitter.hpp"
 #include <Shader.hpp>
 
@@ -12,9 +12,15 @@
 #include <direct.h>
 
 Params params;
-float dt = 0.0f;
+float dt = 0.0f;                  
+Timer main_timer;
+GUI* gui_pointer;
 
+// Callbacks
+void CursorPositionCallback(GLFWwindow* window, double xpos, double ypos);
+void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+void WindowRefreshCallback(GLFWwindow* window);
 
 int main(int argc, char * argv[]) {
 
@@ -24,7 +30,8 @@ int main(int argc, char * argv[]) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    //glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
     auto mWindow = glfwCreateWindow(mWidth, mHeight, "OpenGL", nullptr, nullptr);
 
     // Check for Valid Context
@@ -38,7 +45,11 @@ int main(int argc, char * argv[]) {
     gladLoadGL();
     fprintf(stderr, "OpenGL %s\n", glGetString(GL_VERSION));
 
+    // OpenGL Callback Functions
+    glfwSetCursorPosCallback(mWindow, CursorPositionCallback);
+    glfwSetMouseButtonCallback(mWindow, MouseButtonCallback);
     glfwSetKeyCallback(mWindow, KeyboardCallback);
+    glfwSetWindowRefreshCallback(mWindow, WindowRefreshCallback);
 
     // OpenCL initialization
     std::vector<cl::Platform> all_platforms;
@@ -81,9 +92,12 @@ int main(int argc, char * argv[]) {
     // Read kernel source
     char buffer[1024];
     getcwd(buffer, 1024);
-    std::string kernel_char(buffer);
+    //std::string kernel_char(buffer);
     //kernel_char += "\\..\\Glitter\\Sources\\gpu_src\\test.cl";
-    kernel_char += "\\..\\Glitter\\Sources\\gpu_src\\mandel.cl";
+    //kernel_char += "\\..\\Glitter\\Sources\\gpu_src\\mandel.cl";
+    GetModuleFileName(NULL, buffer, sizeof(buffer));
+    std::string kernel_char(buffer);
+    kernel_char += "\\..\\mandel.cl";
     kernel_source = ReadFile2(kernel_char.c_str());
     sources.push_back({ kernel_source.c_str(), kernel_source.length() });
 
@@ -98,13 +112,6 @@ int main(int argc, char * argv[]) {
 
     // Prepare buffers
     debug_buffer = cl::Buffer(context, CL_MEM_READ_WRITE, sizeof(float) * mWidth * mHeight);
-
-    // OpenGL shaders
-    std::string vs_char(buffer);
-    std::string fs_char(buffer);
-    vs_char += "\\..\\Glitter\\Shaders\\simple_shader.vs";
-    fs_char += "\\..\\Glitter\\Shaders\\simple_shader.fs";
-    Shader simple_shader(vs_char.c_str(), fs_char.c_str());
 
     // Setup OpenGL Buffers
     unsigned int VBO, VAO, EBO;
@@ -143,18 +150,12 @@ int main(int argc, char * argv[]) {
 
     int width, height, nrChannels;
 
-    std::string tex_char(buffer);
-    tex_char += "\\..\\textures\\sample.jpg";
-    unsigned char* data = stbi_load(tex_char.c_str(), &width, &height, &nrChannels, 0);
-    if (data)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-    }
-    else
-    {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(data);
+    height = mHeight;
+    width = mWidth;
+
+    // Set empty
+    std::vector<GLubyte> emptyData(mWidth * mHeight * 4, 0);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, &emptyData[0]);
 
     glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -172,8 +173,10 @@ int main(int argc, char * argv[]) {
     err = clEnqueueAcquireGLObjects(queue(), 1, &copy_texture(), 0, NULL, NULL);
     std::cout << "Acquired GL objects with err:\t" << err << std::endl;
 
+    // Set up kernels
     //tester = cl::Kernel(program, "tex_test");
-    mandeler = cl::Kernel(program, "Mandel");
+    //mandeler = cl::Kernel(program, "Mandel");
+    mandeler = cl::Kernel(program, "MandelSmooth");
     filter = cl::Kernel(program, "GaussianFilter");
     cl::NDRange global_test(width, height);
     //tester(cl::EnqueueArgs(queue, global_test), target_texture).wait();
@@ -193,8 +196,13 @@ int main(int argc, char * argv[]) {
     std::cout << "Finished CL queue with err:\t" << err << std::endl;
 
     // Input information
-    std::cout << "\n\nW or S: zoom (scale)\nA or D: offset horizontally\nE or Q: offset vertically\nR: reset parameters\nF: enable/disable filtering\nP: play/pause animation"
-        << std::endl;
+    std::cout << "\n\nW or S: zoom (scale)\nA or D: offset horizontally\nE or Q: offset vertically\nR: reset parameters\nF: enable/disable filtering\n \
+        P: play/pause animation\n] or [: increase/decrease animation speed" << std::endl;
+
+    // Initialize our GUI
+    GUI gui = GUI(mWindow, main_timer);
+    gui.Init();
+    gui_pointer = &gui;
 
     // Rendering Loop
     float time = glfwGetTime();
@@ -208,6 +216,9 @@ int main(int argc, char * argv[]) {
 
         dt = glfwGetTime() - time;
         time = glfwGetTime();
+
+        // Update Timer
+        main_timer.UpdateTime();
 
         // Flush GL queue        
         glFinish();
@@ -225,8 +236,10 @@ int main(int argc, char * argv[]) {
         float scale = params.scale;
         if (params.playAnimation)
         {
-            params.animationTime += dt;
-            scale = 1.0f + params.animationTime;
+            params.animationTime += dt * params.animationSpeed;
+            gui.animationTime = params.animationTime;
+            //scale = 1.0f + params.animationTime;
+            params.scale = 1.0f + params.animationTime;
         }
 
         //mandeler(cl::EnqueueArgs(queue, global_test), target_texture, dx, dy, scale).wait();
@@ -264,21 +277,76 @@ int main(int argc, char * argv[]) {
         glFramebufferTexture2D(GL_READ_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
             GL_TEXTURE_2D, gl_texture, 0);
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-        glBlitFramebuffer(0, 0, width, height, 0, 0, width, height,
+        /*glBlitFramebuffer(0, 0, width, height, 0, 0, width, height,
+            GL_COLOR_BUFFER_BIT, GL_NEAREST);*/
+        glBlitFramebuffer(0, 0, width, height, 0, 0, mWidth, mHeight,
             GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
-        //// render container
-        //simple_shader.use();
-        //glBindVertexArray(VAO);
-        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        // Render GUI
+        if (gui.gui_enabled)
+            gui.Render();
+
+        // Reset input flags
+        gui.ResetInputFlags();
 
         // Flip Buffers and Draw
         glfwSwapBuffers(mWindow);
         glfwPollEvents();
-    }   glfwTerminate();
+    }
+    
+    // Cleanup GUI
+    gui.Cleanup();
+
+    glfwTerminate();
+    
     return EXIT_SUCCESS;
 }
 
+/// <summary>
+/// Callback function for mouse cursor movement
+/// </summary>
+/// <param name="window"></param>
+/// <param name="xpos"></param>
+/// <param name="ypos"></param>
+void CursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
+{
+    gui_pointer->MousePositionUpdate(xpos, ypos);
+
+    //ImGui_ImplGlfw_CursorPosCallback(window, xpos, ypos);
+}
+
+/// <summary>
+/// Callback function for mouse button press
+/// </summary>
+/// <param name="window"></param>
+/// <param name="button"></param>
+/// <param name="action"></param>
+/// <param name="mods"></param>
+void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (!gui_pointer->clicked && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+    {
+        std::cout << "MOUSE CLICK on x: " << gui_pointer->mouse_xpos << " y: " << gui_pointer->mouse_ypos << std::endl;
+        gui_pointer->clicked = true;
+    }
+    else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+    {
+        std::cout << "MOUSE RELEASE on x: " << gui_pointer->mouse_xpos << " y: " << gui_pointer->mouse_ypos << std::endl;
+        gui_pointer->clicked = false;
+    }
+
+    //ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
+}
+
+
+/// <summary>
+/// Callback Function for keyboard button press
+/// </summary>
+/// <param name="window"></param>
+/// <param name="key"></param>
+/// <param name="scancode"></param>
+/// <param name="action"></param>
+/// <param name="mods"></param>
 void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if ((key == GLFW_KEY_W || key == GLFW_PRESS) && action == GLFW_PRESS)
@@ -299,4 +367,35 @@ void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int
         params.Reset();
     else if (key == GLFW_KEY_P && action == GLFW_PRESS)
         params.playAnimation = !params.playAnimation;
+    else if (key == GLFW_KEY_LEFT_BRACKET && action == GLFW_PRESS)
+    {
+        params.animationSpeed = (params.animationSpeed - 0.2f < 0.1f) ? 0.1f : params.animationSpeed - 0.2f;
+        gui_pointer->animationSpeed = params.animationSpeed;
+    }
+    else if (key == GLFW_KEY_RIGHT_BRACKET && action == GLFW_PRESS)
+    {
+        params.animationSpeed += 0.2f;
+        gui_pointer->animationSpeed = params.animationSpeed;
+    }
+    // Enable/Disable Cursor
+    else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+    {
+        if (gui_pointer->cursor_enabled)
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        else
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_CAPTURED);
+
+        gui_pointer->cursor_enabled = !gui_pointer->cursor_enabled;
+    }
+    // Enable/Disable GUI
+    else if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
+    {
+        gui_pointer->gui_enabled = !gui_pointer->gui_enabled;
+    }
+}
+
+void WindowRefreshCallback(GLFWwindow* window)
+{
+    glfwGetWindowSize(window, &mWidth, &mHeight);
+    glViewport(0, 0, mWidth, mHeight);
 }

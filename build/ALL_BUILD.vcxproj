@@ -69,7 +69,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\imgui;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -79,7 +79,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\imgui;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -89,7 +89,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\imgui;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -99,7 +99,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Repos\Mandelbrot\Glitter\Headers;C:\Repos\Mandelbrot\Glitter\imgui;C:\Repos\Mandelbrot\Glitter\Vendor\glad\include;C:\Repos\Mandelbrot\Glitter\Vendor\glfw\include;C:\Repos\Mandelbrot\Glitter\Vendor\glm;C:\Repos\Mandelbrot\Glitter\Vendor\stb;C:\Repos\Mandelbrot\Glitter\Sources\OpenCL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
