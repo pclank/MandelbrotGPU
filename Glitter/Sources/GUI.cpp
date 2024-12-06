@@ -10,6 +10,8 @@ GUI::GUI(GLFWwindow* pWindow, Timer& timer)
     clicked = false;
     reset_pressed = false;
     gui_enabled = true;
+    animationSpeed = 1.0f;
+    animationTime = 0.0f;
 }
 
 void GUI::Init()
@@ -40,6 +42,10 @@ void GUI::Render()
     ImGui::Begin("Control Window");
     ImGui::Text("DeltaTime: %f", m_timer.GetDeltaTime());
     ImGui::Text("FPS: %.2f", m_timer.GetFPS());
+    ImGui::Separator();
+    ImGui::Text("Animation stuff");
+    ImGui::Text("Animation time: %.2f", animationTime);
+    ImGui::Text("Animation speed: %.1f", animationSpeed);
     ImGui::Separator();
     ImGui::Text("Mouse cursor stuff:");
     ImGui::Text("Cursor_x: %f", mouse_xpos);

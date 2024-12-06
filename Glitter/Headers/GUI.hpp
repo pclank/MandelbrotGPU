@@ -56,6 +56,8 @@ public:
     bool clicked;
     bool reset_pressed;
     bool gui_enabled;
+    float animationTime;
+    float animationSpeed;
 
 private:
     GLFWwindow* p_window;

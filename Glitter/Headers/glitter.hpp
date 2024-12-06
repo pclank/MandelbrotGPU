@@ -42,8 +42,8 @@ struct Params {
 };
 
 // Define Some Constants
-const int mWidth = 1920;
-const int mHeight = 1080;
+int mWidth = 1920;
+int mHeight = 1080;
 const float force = 10.0f;
 
 // **********************************************************************************

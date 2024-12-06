@@ -20,6 +20,7 @@ GUI* gui_pointer;
 void CursorPositionCallback(GLFWwindow* window, double xpos, double ypos);
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+void WindowRefreshCallback(GLFWwindow* window);
 
 int main(int argc, char * argv[]) {
 
@@ -29,7 +30,8 @@ int main(int argc, char * argv[]) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    //glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
     auto mWindow = glfwCreateWindow(mWidth, mHeight, "OpenGL", nullptr, nullptr);
 
     // Check for Valid Context
@@ -47,6 +49,7 @@ int main(int argc, char * argv[]) {
     glfwSetCursorPosCallback(mWindow, CursorPositionCallback);
     glfwSetMouseButtonCallback(mWindow, MouseButtonCallback);
     glfwSetKeyCallback(mWindow, KeyboardCallback);
+    glfwSetWindowRefreshCallback(mWindow, WindowRefreshCallback);
 
     // OpenCL initialization
     std::vector<cl::Platform> all_platforms;
@@ -147,19 +150,6 @@ int main(int argc, char * argv[]) {
 
     int width, height, nrChannels;
 
-    /*std::string tex_char(buffer);
-    tex_char += "\\..\\textures\\sample.jpg";
-    unsigned char* data = stbi_load(tex_char.c_str(), &width, &height, &nrChannels, 0);
-    if (data)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-    }
-    else
-    {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(data);*/
-
     height = mHeight;
     width = mWidth;
 
@@ -247,6 +237,7 @@ int main(int argc, char * argv[]) {
         if (params.playAnimation)
         {
             params.animationTime += dt * params.animationSpeed;
+            gui.animationTime = params.animationTime;
             //scale = 1.0f + params.animationTime;
             params.scale = 1.0f + params.animationTime;
         }
@@ -286,7 +277,9 @@ int main(int argc, char * argv[]) {
         glFramebufferTexture2D(GL_READ_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
             GL_TEXTURE_2D, gl_texture, 0);
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-        glBlitFramebuffer(0, 0, width, height, 0, 0, width, height,
+        /*glBlitFramebuffer(0, 0, width, height, 0, 0, width, height,
+            GL_COLOR_BUFFER_BIT, GL_NEAREST);*/
+        glBlitFramebuffer(0, 0, width, height, 0, 0, mWidth, mHeight,
             GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
         // Render GUI
@@ -375,9 +368,15 @@ void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int
     else if (key == GLFW_KEY_P && action == GLFW_PRESS)
         params.playAnimation = !params.playAnimation;
     else if (key == GLFW_KEY_LEFT_BRACKET && action == GLFW_PRESS)
+    {
         params.animationSpeed = (params.animationSpeed - 0.2f < 0.1f) ? 0.1f : params.animationSpeed - 0.2f;
+        gui_pointer->animationSpeed = params.animationSpeed;
+    }
     else if (key == GLFW_KEY_RIGHT_BRACKET && action == GLFW_PRESS)
+    {
         params.animationSpeed += 0.2f;
+        gui_pointer->animationSpeed = params.animationSpeed;
+    }
     // Enable/Disable Cursor
     else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
     {
@@ -393,4 +392,10 @@ void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int
     {
         gui_pointer->gui_enabled = !gui_pointer->gui_enabled;
     }
+}
+
+void WindowRefreshCallback(GLFWwindow* window)
+{
+    glfwGetWindowSize(window, &mWidth, &mHeight);
+    glViewport(0, 0, mWidth, mHeight);
 }
